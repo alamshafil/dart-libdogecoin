@@ -3,8 +3,7 @@ import 'package:ffi/ffi.dart';
 
 import '../libdogecoin_bindings.dart' as libdoge;
 
-final libdogecoin =
-    libdoge.libdogecoin(DynamicLibrary.open("/usr/local/lib/libdogecoin.so"));
+final libdogecoin = libdoge.libdogecoin(DynamicLibrary.open("libdogecoin.so"));
 
 class LibDogecoin {
   static Keypair generatePrivPubKeypair() {
