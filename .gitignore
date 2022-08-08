@@ -25,5 +25,3 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
-
-lib/libdogecoin_bindings.dart
