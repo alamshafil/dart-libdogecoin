@@ -105,6 +105,108 @@ class LibDogecoin {
 
     return result == 0 ? false : true;
   }
+
+  // Transaction API
+
+  static int startTransaction() {
+    int result = rawLibdogecoin.start_transaction();
+    return result;
+  }
+
+  static void clearTransaction(int index) {
+    rawLibdogecoin.clear_transaction(index);
+  }
+
+  static bool addUtxo(int txindex, String hexUtxo, int vout) {
+    int result = rawLibdogecoin.add_utxo(
+        txindex, hexUtxo.toNativeUtf8().cast<Char>(), vout);
+
+    return result == 0 ? false : true;
+  }
+
+  static bool addOutput(int txindex, String destinationaddress, String amount) {
+    int result = rawLibdogecoin.add_output(
+        txindex,
+        destinationaddress.toNativeUtf8().cast<Char>(),
+        amount.toNativeUtf8().cast<Char>());
+
+    return result == 0 ? false : true;
+  }
+
+  static String finalizeTransaction(
+      int txindex,
+      String destinationaddress,
+      String subtractedfee,
+      String outDogeamountForVerification,
+      String changeaddress) {
+    Pointer<Char> rawResult = rawLibdogecoin.finalize_transaction(
+        txindex,
+        destinationaddress.toNativeUtf8().cast<Char>(),
+        subtractedfee.toNativeUtf8().cast<Char>(),
+        outDogeamountForVerification.toNativeUtf8().cast<Char>(),
+        changeaddress.toNativeUtf8().cast<Char>());
+
+    String result = rawResult.cast<Utf8>().toDartString();
+    return result;
+  }
+
+  static String getRawTransaction(int txindex) {
+    Pointer<Char> rawResult = rawLibdogecoin.get_raw_transaction(txindex);
+
+    String result = rawResult.cast<Utf8>().toDartString();
+    return result;
+  }
+
+  // TODO: Fix signRawTransaction() returns random invalid two UTF-8 chars at end.
+  static String signRawTransaction(int inputindex, String incomingrawtx,
+      String scripthex, int sighashtype, String privkey) {
+    rawLibdogecoin.dogecoin_ecc_start();
+
+    Pointer<Char> pointerRawTx = malloc(1024 * 100);
+    pointerRawTx = incomingrawtx.toNativeUtf8().cast<Char>();
+
+    int result = rawLibdogecoin.sign_raw_transaction(
+        inputindex,
+        pointerRawTx,
+        scripthex.toNativeUtf8().cast<Char>(),
+        sighashtype,
+        privkey.toNativeUtf8().cast<Char>());
+
+    rawLibdogecoin.dogecoin_ecc_stop();
+
+    String strResult = "";
+
+    if (result == 0) {
+      strResult = "";
+    } else {
+      strResult = pointerRawTx.cast<Utf8>().toDartString();
+    }
+
+    malloc.free(pointerRawTx);
+
+    return strResult;
+  }
+
+  static bool signTransaction(
+      int txindex, String scriptPubkey, String privkey) {
+    rawLibdogecoin.dogecoin_ecc_start();
+
+    int result = rawLibdogecoin.sign_transaction(
+        txindex,
+        scriptPubkey.toNativeUtf8().cast<Char>(),
+        privkey.toNativeUtf8().cast<Char>());
+
+    rawLibdogecoin.dogecoin_ecc_stop();
+
+    return result == 0 ? false : true;
+  }
+
+  static int storeRawTransaction(String incomingrawtx) {
+    int result = rawLibdogecoin
+        .store_raw_transaction(incomingrawtx.toNativeUtf8().cast<Char>());
+
+    return result;
+  }
 }
 
 class Keypair {
