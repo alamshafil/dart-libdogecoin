@@ -1,9 +1,10 @@
 import 'dart:ffi';
 import 'package:ffi/ffi.dart';
 
-import '../libdogecoin_bindings.dart' as libdoge;
+import '../libdogecoin_bindings.dart' as libdogecoin;
 
-final libdogecoin = libdoge.libdogecoin(DynamicLibrary.open("libdogecoin.so"));
+final rawLibdogecoin =
+    libdogecoin.libdogecoin(DynamicLibrary.open("libdogecoin.so"));
 
 class LibDogecoin {
   // Address API
@@ -13,11 +14,11 @@ class LibDogecoin {
     Pointer<Char> privKey = malloc.allocate(53);
     Pointer<Char> pubKey = malloc.allocate(35);
 
-    libdogecoin.dogecoin_ecc_start();
+    rawLibdogecoin.dogecoin_ecc_start();
 
-    libdogecoin.generatePrivPubKeypair(privKey, pubKey, testnet);
+    rawLibdogecoin.generatePrivPubKeypair(privKey, pubKey, testnet);
 
-    libdogecoin.dogecoin_ecc_stop();
+    rawLibdogecoin.dogecoin_ecc_stop();
 
     Keypair pair = Keypair(privKey.cast<Utf8>().toDartString(),
         pubKey.cast<Utf8>().toDartString());
@@ -33,12 +34,12 @@ class LibDogecoin {
     Pointer<Char> masterPrivKey = malloc.allocate(200);
     Pointer<Char> masterPubKey = malloc.allocate(35);
 
-    libdogecoin.dogecoin_ecc_start();
+    rawLibdogecoin.dogecoin_ecc_start();
 
-    libdogecoin.generateHDMasterPubKeypair(
+    rawLibdogecoin.generateHDMasterPubKeypair(
         masterPrivKey, masterPubKey, testnet);
 
-    libdogecoin.dogecoin_ecc_stop();
+    rawLibdogecoin.dogecoin_ecc_stop();
 
     HDKeypair pair = HDKeypair(masterPrivKey.cast<Utf8>().toDartString(),
         masterPubKey.cast<Utf8>().toDartString(length: 34));
@@ -52,12 +53,12 @@ class LibDogecoin {
   static String generateDerivedHDPubkey(String masterPrivKey) {
     Pointer<Char> childPubKey = malloc.allocate(35);
 
-    libdogecoin.dogecoin_ecc_start();
+    rawLibdogecoin.dogecoin_ecc_start();
 
-    libdogecoin.generateDerivedHDPubkey(
+    rawLibdogecoin.generateDerivedHDPubkey(
         masterPrivKey.toNativeUtf8().cast<Char>(), childPubKey);
 
-    libdogecoin.dogecoin_ecc_stop();
+    rawLibdogecoin.dogecoin_ecc_stop();
 
     String result = childPubKey.cast<Utf8>().toDartString();
 
@@ -70,14 +71,14 @@ class LibDogecoin {
       String privKey, String pubkey, bool isTestnet) {
     int testnet = isTestnet ? 1 : 0;
 
-    libdogecoin.dogecoin_ecc_start();
+    rawLibdogecoin.dogecoin_ecc_start();
 
-    int result = libdogecoin.verifyPrivPubKeypair(
+    int result = rawLibdogecoin.verifyPrivPubKeypair(
         privKey.toNativeUtf8().cast<Char>(),
         pubkey.toNativeUtf8().cast<Char>(),
         testnet);
 
-    libdogecoin.dogecoin_ecc_stop();
+    rawLibdogecoin.dogecoin_ecc_stop();
 
     return result == 0 ? false : true;
   }
@@ -86,20 +87,20 @@ class LibDogecoin {
       String privKeyMaster, String pubkeyMaster, bool isTestnet) {
     int testnet = isTestnet ? 1 : 0;
 
-    libdogecoin.dogecoin_ecc_start();
+    rawLibdogecoin.dogecoin_ecc_start();
 
-    int result = libdogecoin.verifyHDMasterPubKeypair(
+    int result = rawLibdogecoin.verifyHDMasterPubKeypair(
         privKeyMaster.toNativeUtf8().cast<Char>(),
         pubkeyMaster.toNativeUtf8().cast<Char>(),
         testnet);
 
-    libdogecoin.dogecoin_ecc_stop();
+    rawLibdogecoin.dogecoin_ecc_stop();
 
     return result == 0 ? false : true;
   }
 
   static bool verifyP2pkhAddress(String p2pkhPubkey) {
-    int result = libdogecoin.verifyP2pkhAddress(
+    int result = rawLibdogecoin.verifyP2pkhAddress(
         p2pkhPubkey.toNativeUtf8().cast<Char>(), p2pkhPubkey.length);
 
     return result == 0 ? false : true;
