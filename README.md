@@ -9,7 +9,6 @@ Only supports Linux, Windows, macOS as of now. *(libdogecoin is required to be i
 # Binding progress
 - [x] Address
 - [x] Transactions
-- [ ] P2P (libevent)
 
 # Usage
 
