@@ -4,64 +4,86 @@ import 'package:test/test.dart';
 void main() {
   group('Address tests', () {
     test('generatePrivPubKeypair() - mainnet', () {
+      LibDogecoin.eccStart();
       final keypair = LibDogecoin.generatePrivPubKeypair(false);
+      LibDogecoin.eccStop();
       expect(keypair, isNotNull);
     });
     test('generatePrivPubKeypair() - testnet', () {
+      LibDogecoin.eccStart();
       final keypair = LibDogecoin.generatePrivPubKeypair(true);
       expect(keypair, isNotNull);
+      LibDogecoin.eccStop();
     });
     test('generateHDMasterPubKeypair() - mainnet', () {
+      LibDogecoin.eccStart();
       final keypair = LibDogecoin.generateHDMasterPubKeypair(false);
       expect(keypair, isNotNull);
+      LibDogecoin.eccStop();
     });
     test('generateHDMasterPubKeypair() - testnet', () {
+      LibDogecoin.eccStart();
       final keypair = LibDogecoin.generateHDMasterPubKeypair(true);
       expect(keypair, isNotNull);
+      LibDogecoin.eccStop();
     });
     test('generateDerivedHDPubkey()', () {
+      LibDogecoin.eccStart();
       final keypair = LibDogecoin.generateHDMasterPubKeypair(false);
       final childPubKey =
           LibDogecoin.generateDerivedHDPubkey(keypair.masterPrivKey);
+      LibDogecoin.eccStop();
       expect(keypair, isNotNull);
       expect(childPubKey, isNotNull);
     });
     test('verifyPrivPubKeypair() - mainnet ', () {
+      LibDogecoin.eccStart();
       final keypair = LibDogecoin.generatePrivPubKeypair(false);
       bool isValid = LibDogecoin.verifyPrivPubKeypair(
           keypair.privKey, keypair.pubKey, false);
+      LibDogecoin.eccStop();
       expect(keypair, isNotNull);
       expect(isValid, isTrue);
     });
     test('verifyPrivPubKeypair() - testnet ', () {
+      LibDogecoin.eccStart();
       final keypair = LibDogecoin.generatePrivPubKeypair(true);
       bool isValid = LibDogecoin.verifyPrivPubKeypair(
           keypair.privKey, keypair.pubKey, true);
+      LibDogecoin.eccStop();
       expect(keypair, isNotNull);
       expect(isValid, isTrue);
     });
     test('verifyHDMasterPubKeypair() - mainnet ', () {
+      LibDogecoin.eccStart();
       final keypair = LibDogecoin.generateHDMasterPubKeypair(false);
       bool isValid = LibDogecoin.verifyHDMasterPubKeypair(
           keypair.masterPrivKey, keypair.masterPubKey, false);
+      LibDogecoin.eccStop();
       expect(keypair, isNotNull);
       expect(isValid, isTrue);
     });
     test('verifyHDMasterPubKeypair() - testnet ', () {
+      LibDogecoin.eccStart();
       final keypair = LibDogecoin.generateHDMasterPubKeypair(true);
       bool isValid = LibDogecoin.verifyHDMasterPubKeypair(
           keypair.masterPrivKey, keypair.masterPubKey, true);
+      LibDogecoin.eccStop();
       expect(keypair, isNotNull);
       expect(isValid, isTrue);
     });
     test('verifyP2pkhAddress() - mainnet ', () {
+      LibDogecoin.eccStart();
       final keypair = LibDogecoin.generatePrivPubKeypair(true);
+      LibDogecoin.eccStop();
       bool isValid = LibDogecoin.verifyP2pkhAddress(keypair.pubKey);
       expect(keypair, isNotNull);
       expect(isValid, isTrue);
     });
     test('verifyP2pkhAddress() - testnet ', () {
+      LibDogecoin.eccStart();
       final keypair = LibDogecoin.generatePrivPubKeypair(false);
+      LibDogecoin.eccStop();
       bool isValid = LibDogecoin.verifyP2pkhAddress(keypair.pubKey);
       expect(keypair, isNotNull);
       expect(isValid, isTrue);
@@ -144,6 +166,7 @@ void main() {
     });
     // TODO: Fix signRawTransaction()
     // test('signRawTransaction()', () {
+    //   LibDogecoin.eccStart();
     //   String prevOutputTxid2 =
     //       "b4455e7b7b7acb51fb6feba7a2702c42a5100f61f61abafa31851ed6ae076074"; // worth 2 dogecoin
     //   String prevOutputTxid10 =
@@ -171,11 +194,12 @@ void main() {
     //       1, halfSignedHex, myScriptPubkey, 1, myPrivkey);
 
     //   print("The final signed transaction hex is: $fullSignedHex ");
-
+    //    LibDogecoin.eccStop();
     //   expect(index, isNotNull);
     //   LibDogecoin.clearTransaction(index);
     // });
     test('signTransaction()', () {
+      LibDogecoin.eccStart();
       String prevOutputTxid2 =
           "b4455e7b7b7acb51fb6feba7a2702c42a5100f61f61abafa31851ed6ae076074"; // worth 2 dogecoin
       String prevOutputTxid10 =
@@ -203,6 +227,7 @@ void main() {
 
       LibDogecoin.clearTransaction(index);
 
+      LibDogecoin.eccStop();
       expect(index, isNotNull);
       expect(isValid, isTrue);
       expect(finalHex,

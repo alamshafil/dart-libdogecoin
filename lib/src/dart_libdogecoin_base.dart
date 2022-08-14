@@ -18,6 +18,10 @@ final rawLibdogecoin = libdogecoin.libdogecoin(getLibrary());
 
 /// High-level libdogecoin bindings.
 class LibDogecoin {
+  // ECC
+  static void eccStart() => rawLibdogecoin.dogecoin_ecc_start();
+  static void eccStop() => rawLibdogecoin.dogecoin_ecc_stop();
+
   // Address API
 
   /// Generates a private and public keypair (a wallet import format private key and a p2pkh ready-to-use corresponding dogecoin address)
@@ -26,11 +30,7 @@ class LibDogecoin {
     Pointer<Char> privKey = malloc.allocate(53);
     Pointer<Char> pubKey = malloc.allocate(35);
 
-    rawLibdogecoin.dogecoin_ecc_start();
-
     rawLibdogecoin.generatePrivPubKeypair(privKey, pubKey, testnet);
-
-    rawLibdogecoin.dogecoin_ecc_stop();
 
     Keypair pair = Keypair(privKey.cast<Utf8>().toDartString(),
         pubKey.cast<Utf8>().toDartString());
@@ -47,12 +47,8 @@ class LibDogecoin {
     Pointer<Char> masterPrivKey = malloc.allocate(200);
     Pointer<Char> masterPubKey = malloc.allocate(35);
 
-    rawLibdogecoin.dogecoin_ecc_start();
-
     rawLibdogecoin.generateHDMasterPubKeypair(
         masterPrivKey, masterPubKey, testnet);
-
-    rawLibdogecoin.dogecoin_ecc_stop();
 
     HDKeypair pair = HDKeypair(masterPrivKey.cast<Utf8>().toDartString(),
         masterPubKey.cast<Utf8>().toDartString(length: 34));
@@ -67,12 +63,8 @@ class LibDogecoin {
   static String generateDerivedHDPubkey(String masterPrivKey) {
     Pointer<Char> childPubKey = malloc.allocate(35);
 
-    rawLibdogecoin.dogecoin_ecc_start();
-
     rawLibdogecoin.generateDerivedHDPubkey(
         masterPrivKey.toNativeUtf8().cast<Char>(), childPubKey);
-
-    rawLibdogecoin.dogecoin_ecc_stop();
 
     String result = childPubKey.cast<Utf8>().toDartString();
 
@@ -86,14 +78,10 @@ class LibDogecoin {
       String privKey, String pubkey, bool isTestnet) {
     int testnet = isTestnet ? 1 : 0;
 
-    rawLibdogecoin.dogecoin_ecc_start();
-
     int result = rawLibdogecoin.verifyPrivPubKeypair(
         privKey.toNativeUtf8().cast<Char>(),
         pubkey.toNativeUtf8().cast<Char>(),
         testnet);
-
-    rawLibdogecoin.dogecoin_ecc_stop();
 
     return result == 0 ? false : true;
   }
@@ -103,14 +91,10 @@ class LibDogecoin {
       String privKeyMaster, String pubkeyMaster, bool isTestnet) {
     int testnet = isTestnet ? 1 : 0;
 
-    rawLibdogecoin.dogecoin_ecc_start();
-
     int result = rawLibdogecoin.verifyHDMasterPubKeypair(
         privKeyMaster.toNativeUtf8().cast<Char>(),
         pubkeyMaster.toNativeUtf8().cast<Char>(),
         testnet);
-
-    rawLibdogecoin.dogecoin_ecc_stop();
 
     return result == 0 ? false : true;
   }
@@ -191,8 +175,6 @@ class LibDogecoin {
   // TODO: Fix signRawTransaction() returns random invalid two UTF-8 chars at end.
   static String signRawTransaction(int inputindex, String incomingrawtx,
       String scripthex, int sighashtype, String privkey) {
-    rawLibdogecoin.dogecoin_ecc_start();
-
     Pointer<Char> pointerRawTx = malloc(1024 * 100);
     pointerRawTx = incomingrawtx.toNativeUtf8().cast<Char>();
 
@@ -202,8 +184,6 @@ class LibDogecoin {
         scripthex.toNativeUtf8().cast<Char>(),
         sighashtype,
         privkey.toNativeUtf8().cast<Char>());
-
-    rawLibdogecoin.dogecoin_ecc_stop();
 
     String strResult = "";
 

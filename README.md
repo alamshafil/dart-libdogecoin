@@ -36,7 +36,9 @@ For use in Flutter, add `libdogecoin.framework` to your Xcode project.
 import 'package:dart_libdogecoin/dart_libdogecoin.dart';
 
 void main() {
+  LibDogecoin.eccStart();
   final keypair = LibDogecoin.generateHDMasterPubKeypair(false); // false means use mainnet
+  LibDogecoin.eccStop();
 
   print("Public key: ${keypair.masterPubKey}");
   print("Private key: ${keypair.masterPrivKey}");
