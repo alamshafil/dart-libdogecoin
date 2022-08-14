@@ -4,10 +4,17 @@ import 'package:ffi/ffi.dart';
 
 import '../libdogecoin_bindings.dart' as libdogecoin;
 
+DynamicLibrary getLibrary() {
+  if (Platform.isIOS) return DynamicLibrary.process();
+  if (Platform.isAndroid) return DynamicLibrary.open("libdogecoin.so");
+  if (Platform.isLinux) return DynamicLibrary.open("libdogecoin.so");
+  if (Platform.isMacOS) return DynamicLibrary.open("libdogecoin.dylib");
+  if (Platform.isWindows) return DynamicLibrary.open("libdogecoin.dll");
+  return DynamicLibrary.process(); // Fall back
+}
+
 /// Low-level libdogecoin bindings.
-final rawLibdogecoin = libdogecoin.libdogecoin(Platform.isIOS
-    ? DynamicLibrary.process()
-    : DynamicLibrary.open("libdogecoin.so"));
+final rawLibdogecoin = libdogecoin.libdogecoin(getLibrary());
 
 /// High-level libdogecoin bindings.
 class LibDogecoin {
