@@ -2,13 +2,9 @@
 
 libdogecoin bindings for Dart and Flutter
 
-Only supports Linux, Windows, macOS as of now. *(libdogecoin is required to be installed)*
+Supports Linux, Windows, macOS, Android and iOS. *(libdogecoin is required to be installed or linked)*
 
-**Note: This is project and README is a work in progress!**
-
-# Binding progress
-- [x] Address
-- [x] Transactions
+**Note: This project and README is a work in progress!**
 
 # Usage
 
