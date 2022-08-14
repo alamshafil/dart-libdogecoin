@@ -25,7 +25,7 @@ class LibDogecoin {
   // Address API
 
   /// Generates a private and public keypair (a wallet import format private key and a p2pkh ready-to-use corresponding dogecoin address)
-  static Keypair generatePrivPubKeypair(bool isTestnet) {
+  static Keypair generatePrivPubKeypair({bool isTestnet = false}) {
     int testnet = isTestnet ? 1 : 0;
     Pointer<Char> privKey = malloc.allocate(53);
     Pointer<Char> pubKey = malloc.allocate(35);
@@ -42,7 +42,7 @@ class LibDogecoin {
   }
 
   /// Generates a hybrid deterministic WIF master key and p2pkh ready-to-use corresponding dogecoin address.
-  static HDKeypair generateHDMasterPubKeypair(bool isTestnet) {
+  static HDKeypair generateHDMasterPubKeypair({bool isTestnet = false}) {
     int testnet = isTestnet ? 1 : 0;
     Pointer<Char> masterPrivKey = malloc.allocate(200);
     Pointer<Char> masterPubKey = malloc.allocate(35);
@@ -74,8 +74,8 @@ class LibDogecoin {
   }
 
   /// Verify that a private key and dogecoin address match.
-  static bool verifyPrivPubKeypair(
-      String privKey, String pubkey, bool isTestnet) {
+  static bool verifyPrivPubKeypair(String privKey, String pubkey,
+      {bool isTestnet = false}) {
     int testnet = isTestnet ? 1 : 0;
 
     int result = rawLibdogecoin.verifyPrivPubKeypair(
@@ -88,7 +88,8 @@ class LibDogecoin {
 
   /// Verify that a HD Master key and a dogecoin address matches.
   static bool verifyHDMasterPubKeypair(
-      String privKeyMaster, String pubkeyMaster, bool isTestnet) {
+      String privKeyMaster, String pubkeyMaster,
+      {bool isTestnet = false}) {
     int testnet = isTestnet ? 1 : 0;
 
     int result = rawLibdogecoin.verifyHDMasterPubKeypair(

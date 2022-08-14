@@ -37,7 +37,7 @@ import 'package:dart_libdogecoin/dart_libdogecoin.dart';
 
 void main() {
   LibDogecoin.eccStart();
-  final keypair = LibDogecoin.generateHDMasterPubKeypair(false); // false means use mainnet
+  final keypair = LibDogecoin.generateHDMasterPubKeypair(); // By default mainnet is used.
   LibDogecoin.eccStop();
 
   print("Public key: ${keypair.masterPubKey}");

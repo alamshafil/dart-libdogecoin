@@ -5,31 +5,31 @@ void main() {
   group('Address tests', () {
     test('generatePrivPubKeypair() - mainnet', () {
       LibDogecoin.eccStart();
-      final keypair = LibDogecoin.generatePrivPubKeypair(false);
+      final keypair = LibDogecoin.generatePrivPubKeypair(isTestnet: false);
       LibDogecoin.eccStop();
       expect(keypair, isNotNull);
     });
     test('generatePrivPubKeypair() - testnet', () {
       LibDogecoin.eccStart();
-      final keypair = LibDogecoin.generatePrivPubKeypair(true);
+      final keypair = LibDogecoin.generatePrivPubKeypair(isTestnet: true);
       expect(keypair, isNotNull);
       LibDogecoin.eccStop();
     });
     test('generateHDMasterPubKeypair() - mainnet', () {
       LibDogecoin.eccStart();
-      final keypair = LibDogecoin.generateHDMasterPubKeypair(false);
+      final keypair = LibDogecoin.generateHDMasterPubKeypair(isTestnet: false);
       expect(keypair, isNotNull);
       LibDogecoin.eccStop();
     });
     test('generateHDMasterPubKeypair() - testnet', () {
       LibDogecoin.eccStart();
-      final keypair = LibDogecoin.generateHDMasterPubKeypair(true);
+      final keypair = LibDogecoin.generateHDMasterPubKeypair(isTestnet: true);
       expect(keypair, isNotNull);
       LibDogecoin.eccStop();
     });
     test('generateDerivedHDPubkey()', () {
       LibDogecoin.eccStart();
-      final keypair = LibDogecoin.generateHDMasterPubKeypair(false);
+      final keypair = LibDogecoin.generateHDMasterPubKeypair(isTestnet: false);
       final childPubKey =
           LibDogecoin.generateDerivedHDPubkey(keypair.masterPrivKey);
       LibDogecoin.eccStop();
@@ -38,43 +38,47 @@ void main() {
     });
     test('verifyPrivPubKeypair() - mainnet ', () {
       LibDogecoin.eccStart();
-      final keypair = LibDogecoin.generatePrivPubKeypair(false);
+      final keypair = LibDogecoin.generatePrivPubKeypair(isTestnet: false);
       bool isValid = LibDogecoin.verifyPrivPubKeypair(
-          keypair.privKey, keypair.pubKey, false);
+          keypair.privKey, keypair.pubKey,
+          isTestnet: false);
       LibDogecoin.eccStop();
       expect(keypair, isNotNull);
       expect(isValid, isTrue);
     });
     test('verifyPrivPubKeypair() - testnet ', () {
       LibDogecoin.eccStart();
-      final keypair = LibDogecoin.generatePrivPubKeypair(true);
+      final keypair = LibDogecoin.generatePrivPubKeypair(isTestnet: true);
       bool isValid = LibDogecoin.verifyPrivPubKeypair(
-          keypair.privKey, keypair.pubKey, true);
+          keypair.privKey, keypair.pubKey,
+          isTestnet: true);
       LibDogecoin.eccStop();
       expect(keypair, isNotNull);
       expect(isValid, isTrue);
     });
     test('verifyHDMasterPubKeypair() - mainnet ', () {
       LibDogecoin.eccStart();
-      final keypair = LibDogecoin.generateHDMasterPubKeypair(false);
+      final keypair = LibDogecoin.generateHDMasterPubKeypair(isTestnet: false);
       bool isValid = LibDogecoin.verifyHDMasterPubKeypair(
-          keypair.masterPrivKey, keypair.masterPubKey, false);
+          keypair.masterPrivKey, keypair.masterPubKey,
+          isTestnet: false);
       LibDogecoin.eccStop();
       expect(keypair, isNotNull);
       expect(isValid, isTrue);
     });
     test('verifyHDMasterPubKeypair() - testnet ', () {
       LibDogecoin.eccStart();
-      final keypair = LibDogecoin.generateHDMasterPubKeypair(true);
+      final keypair = LibDogecoin.generateHDMasterPubKeypair(isTestnet: true);
       bool isValid = LibDogecoin.verifyHDMasterPubKeypair(
-          keypair.masterPrivKey, keypair.masterPubKey, true);
+          keypair.masterPrivKey, keypair.masterPubKey,
+          isTestnet: true);
       LibDogecoin.eccStop();
       expect(keypair, isNotNull);
       expect(isValid, isTrue);
     });
     test('verifyP2pkhAddress() - mainnet ', () {
       LibDogecoin.eccStart();
-      final keypair = LibDogecoin.generatePrivPubKeypair(true);
+      final keypair = LibDogecoin.generatePrivPubKeypair(isTestnet: true);
       LibDogecoin.eccStop();
       bool isValid = LibDogecoin.verifyP2pkhAddress(keypair.pubKey);
       expect(keypair, isNotNull);
@@ -82,7 +86,7 @@ void main() {
     });
     test('verifyP2pkhAddress() - testnet ', () {
       LibDogecoin.eccStart();
-      final keypair = LibDogecoin.generatePrivPubKeypair(false);
+      final keypair = LibDogecoin.generatePrivPubKeypair(isTestnet: false);
       LibDogecoin.eccStop();
       bool isValid = LibDogecoin.verifyP2pkhAddress(keypair.pubKey);
       expect(keypair, isNotNull);
