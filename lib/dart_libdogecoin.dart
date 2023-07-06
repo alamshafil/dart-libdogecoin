@@ -1,8 +1,6 @@
-/// Support for doing something awesome.
-///
-/// More dartdocs go here.
+/// High-level libdogecoin bindings for Dart
 library dart_libdogecoin;
 
-export 'src/dart_libdogecoin_base.dart';
+export 'dart_libdogecoin_base.dart';
 
 // TODO: Export any libraries intended for clients of this package.

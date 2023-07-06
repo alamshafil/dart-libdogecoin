@@ -1,10 +1,10 @@
 name: dart_libdogecoin
 description: Dart bindings for libdogecoin
-version: 0.1.0+1
+version: 0.1.2
 homepage: https://github.com/alamshafil/dart-libdogecoin
 
 environment:
-  sdk: '>=2.15.1 <3.0.0'
+  sdk: ">=3.0.0 <4.0.0"
 
 # dependencies:
 
@@ -16,9 +16,9 @@ dependencies:
   ffi: 
 
 ffigen:
-  output: 'lib/libdogecoin_bindings.dart'
+  output: 'lib/dart_libdogecoin_raw.dart'
   headers:
     entry-points:
-      - 'dogecoin/**.h'
+      - 'include/**.h'
   name: 'libdogecoin'
   description: 'Bindings to libdogecoin'
